@@ -19,15 +19,12 @@ export function parseTestTreeHierarchy(fileName, logger) {
     testFolderIndex + testFolder.length + 2,
   );
 
-  let attributes = relativePath
-    .split('/')
-    .map(attribute => capitalize(camelCaseToPhrase(attribute)));
+  const segments = relativePath.split('/');
+  const folderSegments = segments.filter(s => !s.includes('.spec.js'));
 
-  if (attributes[2]?.includes('.spec.js')) {
-    attributes = attributes.slice(0, 2);
-  }
-
-  attributes = attributes.map(attr => attr.replace(/\.spec\.js$/i, '').trim());
+  const attributes = folderSegments.map(attribute =>
+    capitalize(camelCaseToPhrase(attribute)),
+  );
 
   logger.debug(`Parsed test hierarchy: ${JSON.stringify(attributes)}`);
 
